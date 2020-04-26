@@ -1,18 +1,26 @@
 <?php
 class Database{
  
+    // specify your own database credentials
+    private $host = "mariadb.cqelggijvnya.us-west-2.rds.amazonaws.com";
+    private $db_name = "mydatabase";
+    private $username = "root";
+    private $password = "Passwssw0rd";
+    public $conn;
+ 
     // get the database connection
     public function getConnection(){
-      $dbhost = $_SERVER['RDS_HOSTNAME'];
-      $dbport = $_SERVER['RDS_PORT'];
-      $dbname = $_SERVER['RDS_DB_NAME'];
-      $charset = 'utf8' ;
-
-      $dsn = "mysql:host={$dbhost};port={$dbport};dbname={$dbname};charset={$charset}";
-      $username = $_SERVER['RDS_USERNAME'];
-      $password = $_SERVER['RDS_PASSWORD'];
-
-      $pdo = new PDO($dsn, $username, $password);
+ 
+        $this->conn = null;
+ 
+        try{
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->exec("set names utf8");
+        }catch(PDOException $exception){
+            echo "Connection error: " . $exception->getMessage();
+        }
+ 
+        return $this->conn;
     }
 }
 ?>

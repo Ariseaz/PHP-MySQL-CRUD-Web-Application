@@ -1,26 +1,14 @@
 <?php
 class Database{
  
-    // specify your own database credentials
-    private $host = getenv('RDS_HOSTNAME');
-    private $db_name = getenv('RDS_DATABASE');
-    private $username = getenv('RDS_USERNAME');
-    private $password = getenv('RDS_PASSWORD');
-    public $conn;
- 
     // get the database connection
     public function getConnection(){
  
-        $this->conn = null;
- 
-        try{
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->exec("set names utf8");
-        }catch(PDOException $exception){
-            echo "Connection error: " . $exception->getMessage();
-        }
- 
-        return $this->conn;
+        $mysqli = new mysqli(getenv('RDS_HOSTNAME'), getenv('RDS_USERNAME'), getenv('RDS_PASSWORD'), getenv('RDS_DATABASE'));
+if ($mysqli->connect_errno) {
+      echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+}
+echo $mysqli->host_info . "\n";
     }
 }
 ?>

@@ -3,12 +3,16 @@ class Database{
  
     // get the database connection
     public function getConnection(){
- 
-        $mysqli = new mysqli(getenv('RDS_HOSTNAME'), getenv('RDS_USERNAME'), getenv('RDS_PASSWORD'), getenv('RDS_DATABASE'));
-if ($mysqli->connect_errno) {
-      echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-}
-echo $mysqli->host_info . "\n";
+      $dbhost = $_SERVER['RDS_HOSTNAME'];
+      $dbport = $_SERVER['RDS_PORT'];
+      $dbname = $_SERVER['RDS_DB_NAME'];
+      $charset = 'utf8' ;
+
+      $dsn = "mysql:host={$dbhost};port={$dbport};dbname={$dbname};charset={$charset}";
+      $username = $_SERVER['RDS_USERNAME'];
+      $password = $_SERVER['RDS_PASSWORD'];
+
+      $pdo = new PDO($dsn, $username, $password);
     }
 }
 ?>
